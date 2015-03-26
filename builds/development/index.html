@@ -5,19 +5,69 @@
   <meta charset="UTF-8">
   <title>Code Clinic--JavaScript</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/c3.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/prefixfree.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div class="container">
-  <div class="row">
-    <p class="col-md-6">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui laudantium mollitia molestiae, animi tempora amet. Atque culpa, quia excepturi sed beatae et, esse, repellendus temporibus impedit architecto nulla veritatis asperiores?</p>
-    <p class="col-md-6">Error debitis vero soluta, itaque ducimus, nemo nulla reiciendis ea necessitatibus perferendis possimus qui! Ea dolor facilis neque explicabo, delectus provident pariatur dolores corrupti odit voluptatum distinctio voluptas reprehenderit sed.</p>
-  </div>
-</div>
+  <header class="header">
+    <div class="branding container">
+      <div class="logo"><img src="images/codeclinicicon.svg" alt="Code Clinic Logo"></div>
+      <div class="body">
+        <h1>Code Clinic</h1>
+        <h2>Exploring Lake Pend Oreille</h2>
+      </div>
+    </div>
+  </header>
+  <div class="main">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p>In this example, we’ll use weather data collected by the US Navy from Lake Pend Oreille in Northern Idaho and JavaScript to visualize and query the date from an API.</p>
+        </div>
+      </div>
+      <div class="row dateselector">
+        <div class="col-sm-7 center">
+          <form class="form-inline" name="rangeform">
+            <div class="form-group">
+              <label>from
+                <input type="date" name="from" class="form-control">
+              </label>
+            </div>
+            <div class="form-group">
+              <label>to
+                <input type="date" class="form-control" name="to">
+              </label>
+            </div>
+            <button type="submit" name="plot" class="btn btn-danger">plot</button>
+          </form>
+        </div><!-- col-md-12 -->
+      </div>
+      <div class="row chart">
+        <div class="col-md-12">
+        <figure>
+        <div id="chart"></div>
+        <figcaption>Click and drag on the bottom chart to see a smaller range</figcaption>
+        </figure>
+        </div><!-- col -->
+      </div><!-- row -->
+    </div><!-- container -->
+  </div><!-- main --> 
+  <footer class="footer container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>About Code Clinic</h2>
+      </div>
+    </div>
+    <div class="row">
+      <p class="col-md-6">Code Clinic is a monthly course where a unique problem is introduced to a collection of lynda.com authors. In response, each author will create a solution using their programming language of choice. </p>
+      <p class="col-md-6">You can learn several things from Code Clinic: different approaches to solving a problem, the pros and cons of different languages, and some tips and tricks to incorporate into your own coding practices.</p>
+    </div>
+  </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="js/c3.min.js"></script>
 <script src="js/myscript.js"></script>
 </body>
 </html>
