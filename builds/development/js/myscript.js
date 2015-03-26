@@ -2,10 +2,16 @@
 
 document.rangeform.onsubmit=function() {
 
-  var from = document.rangeform.from.value;
-  var to = document.rangeform.to.value;
+  var from = new Date(document.rangeform.from.value);
+  var to = new Date(document.rangeform.to.value);
+	var earliest = new Date('2011-01-01');
+	var yesterday = new Date();
+	yesterday.setDate(yesterday.getDate() - 1);
 
-  	console.log(from + '--' +to)
+	if (from < earliest || to >= yesterday) {
+		alert ('bad date!');
+	}
+  	console.log(from + '--' + to + '--' +yesterday);
   	return false;
 };
 

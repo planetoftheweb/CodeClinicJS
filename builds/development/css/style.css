@@ -1,6 +1,9 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800|Roboto+Slab:400,100,300,700);
 
 /**  Basic Page CSS **/
+
+html { font-size: 62.5%; } 
+
 body{
   font-family: "Roboto Slab", sans-serif;
   font-weight: 300;
@@ -30,6 +33,17 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 300;
 	color: #EEE8D6;
 }
+
+.header .language {
+	font-family: 'Roboto Slab';
+	color: #F9B640;
+	font-size: 3rem;
+}
+
+.header .language:before {
+	content : ': ';
+}
+
 
 .header .branding{
 	margin: 0 auto;
