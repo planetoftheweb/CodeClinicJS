@@ -2,7 +2,7 @@
 
 /**  Basic Page CSS **/
 
-html { font-size: 62.5%; } 
+html { font-size: 62.5%; }
 
 body{
   font-family: "Roboto Slab", sans-serif;
@@ -40,8 +40,9 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 3rem;
 }
 
-.header .language:before {
-	content : ': ';
+.header .language img {
+  width: 50px;
+  vertical-align: 0px;
 }
 
 

@@ -14,7 +14,7 @@
     <div class="branding container">
       <div class="logo"><img src="images/codeclinicicon.svg" alt="Code Clinic Logo"></div>
       <div class="body">
-        <h1>Code Clinic <span class="language">JavaScript</span></h1>
+        <h1>Code Clinic <span class="language"><img src="images/javascriptlogo.svg" alt="JavaScript Logo"></span></h1>
         <h2>Exploring Lake Pend Oreille</h2>
       </div>
     </div>
@@ -31,12 +31,12 @@
           <form class="form-inline" name="rangeform">
             <div class="form-group">
               <label>from
-                <input type="date" name="from" class="form-control">
+                <input type="date" required name="from" class="form-control">
               </label>
             </div>
             <div class="form-group">
               <label>to
-                <input type="date" class="form-control" name="to">
+                <input type="date" required class="form-control" name="to">
               </label>
             </div>
             <button type="submit" name="plot" class="btn btn-danger">plot</button>
@@ -52,7 +52,7 @@
         </div><!-- col -->
       </div><!-- row -->
     </div><!-- container -->
-  </div><!-- main --> 
+  </div><!-- main -->
   <footer class="footer container">
     <div class="row">
       <div class="col-md-12">
@@ -64,10 +64,31 @@
       <p class="col-md-6">You can learn several things from Code Clinic: different approaches to solving a problem, the pros and cons of different languages, and some tips and tricks to incorporate into your own coding practices.</p>
     </div>
   </footer>
+
+<div class="modal fade" id="badDate" tabindex="-1" role="dialog" aria-labelledby="badDate" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Your dates are out of range, dates must be:</p>
+        <ol>
+          <li>A date earlier than today</li>
+          <li>No earlier than 2011-01-01</li>
+          <li>Ranges must also not be bigger than 30 days</li>
+        </ol>
+      <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+      </div>
+      <div class="modal-footer">
+    </div>
+  </div>
+</div>
+</div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="js/c3.min.js"></script>
+<script src="http://foundationphp.com/phpclinic/podata.php?startDate=20150322&endDate=20150325&raw"></script>
 <script src="js/myscript.js"></script>
 </body>
 </html>
