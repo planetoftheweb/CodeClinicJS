@@ -1,30 +1,53 @@
 $(function() {
   'use strict';
 
-  function getAvg(myArray) {
-    return myArray.reduce(function(a, b) { return a + b; return })/myArray.length;
+  function getMean(myArray) {
+    if (myArray!==null) {
+      var average = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
+      return average;
+    }
+  }
+
+  function getMedian(myArray) {
+    var median;
+    if (myArray!==null) {
+      var sorted = myArray.sort(myArray);
+
+      var middle = ((sorted.length) / 2);
+      if(sorted.length % 2 === 0) {
+        var medianA = sorted[middle];
+        var medianB = sorted[middle-1];
+        median = (medianA + medianB) / 2;
+      } else {
+        median = sorted[middle + 1];
+      }
+    }
+    return median;
   }
 
   function processData(data) {
+    var myData = [];
     for ( var key in data) {
-      var airTemp = data[key].t;
-      var baroPress = data[key].p;
-      var winSpeed = data[key].s;
+      if (data.hasOwnProperty(key)) {
+        var airTemp = data[key].t;
+        var baroPress = data[key].p;
+        var winSpeed = data[key].s;
 
-      var avgTemp = getAvg(airTemp);
-      var avgPress = getAvg(baroPress);
-      var avgSpeed = getAvg(winSpeed);
-
-
-      return {
-
+        var myObject = {
+            date: key,
+            temp: {mean: getMean(airTemp), median: getMedian(airTemp) },
+            press: {mean: getMean(baroPress), median:getMedian(baroPress) },
+            speed: {mean: getMean(winSpeed), median:getMedian(winSpeed) }
+        };
+        myData.push(myObject);
       }
     }
+    return myData;
   }
 
   var chartData = processData(jsonReturnData);
 
-    document.rangeform.onsubmit=function() {
+  document.rangeform.onsubmit=function() {
     var from = new Date(document.rangeform.from.value);
     var to = new Date(document.rangeform.to.value);
   	var earliest = new Date('2011-01-01');
@@ -36,7 +59,6 @@ $(function() {
   	if (from < earliest || to >= yesterday) {
   		 validDate = false;
   		$('#badDate').modal('show');
-    	console.log(from + '--' + to + '--' +yesterday);
   	}
     	return false;
   };
@@ -44,7 +66,7 @@ $(function() {
   var chart = c3.generate({
     data: {
         x : 'date_time',
-  		  xFormat: '%Y-%m-%d %H:%M:%S',
+  		  xFormat: '%Y-%m-%d',
   			url: 'data/2011.csv',
   			type: 'bar',
         groups: [
@@ -52,7 +74,7 @@ $(function() {
         ],
         hide: ['Dew_Point','Relative_Humidity','Wind_Dir','Wind_Gust'],
   		  onclick: function (d) {
-  		  	console.log(d);
+  		  	//console.log(d);
   		  }
     },
     color: {
