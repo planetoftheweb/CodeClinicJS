@@ -24,25 +24,34 @@ $(function() {
     }
     return median;
   }
-// date_time,Air_Temp,Barometric_Press,Dew_Point,Relative_Humidity,Wind_Dir,Wind_Gust,Wind_Speed
-// 2011-01-01 00:05:27,18.90,30.30,15.70,87.40,144.20,15.00,12.40
 
   function processData(data) {
     var myData = [];
-    var myItem = ['date','Mean Air Temperature', 'Median Air Temperature', 'Mean Barometic Pressure', 'Median Barometic Pressure', 'Mean Wind Speed', 'Median Wind Speed'];
-    myData.push(myItem);
+
+    var myDates = ['x'];
+    var meanTemps = ['Mean Temperature'];
+    var medTemps = ['Median Temperature'];
+    var meanPress = ['Mean Pressure'];
+    var medPress = ['Median Pressure'];
+    var medSpeeds = ['Median Speed'];
+    var meanSpeeds = ['Mean Speed'];
+    var id = 0;
+
     for ( var key in data) {
       if (data.hasOwnProperty(key)) {
-        myItem = [];
-        var airTemp = data[key].t;
-        var baroPress = data[key].p;
-        var winSpeed = data[key].s;
-
-        myItem.push(key, getMean(airTemp), getMedian(airTemp), getMean(baroPress),getMedian(baroPress),getMean(winSpeed),getMedian(winSpeed));
-        myData.push(myItem);
+        myDates.push(key);
+        meanTemps.push(getMean(data[key].t));
+        medTemps.push(getMedian(data[key].t));
+        meanPress.push(getMean(data[key].p));
+        medPress.push(getMedian(data[key].p));
+        meanSpeeds.push(getMean(data[key].s));
+        medSpeeds.push(getMedian(data[key].s));
+        id++;
       } //hasOwnProperty
     } //for loop
 
+
+    myData.push(myDates, meanTemps, medTemps, meanPress, medSpeeds, meanSpeeds);
     return myData;
   } //processData
 
@@ -67,17 +76,20 @@ $(function() {
 
   var chart = c3.generate({
     data: {
-        x: 'date',
+        x: 'x',
         columns: chartData,
         type: 'bar',
         groups: [
-          ['2015-03-23','2015-03-24','2015-03-25']
+            ['Mean Temperature', 'Median Temperature', 'Mean Pressure', 'Median Pressure', 'Median Speed', 'Mean Speed']
         ]
     },
     axis: {
         x: {
-            type: 'category' // this needed to load string x value
+            type: 'timeseries',
+            tick: {
+                format: '%Y-%m-%d'
+            }
         }
     }
-  });
-});
+  }); //generate chart
+}); // Function
