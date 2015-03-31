@@ -39,14 +39,18 @@ $(function() {
 
     for ( var key in data) {
       if (data.hasOwnProperty(key)) {
-        myDates.push(key);
-        meanTemps.push(getMean(data[key].t));
-        medTemps.push(getMedian(data[key].t));
-        meanPress.push(getMean(data[key].p));
-        medPress.push(getMedian(data[key].p));
-        meanSpeeds.push(getMean(data[key].s));
-        medSpeeds.push(getMedian(data[key].s));
-        id++;
+        if ((data[key].t !== null) && 
+            (data[key].p !== null) && 
+            (data[key].s !== null)) {
+          myDates.push(key);
+          meanTemps.push(getMean(data[key].t));
+          medTemps.push(getMedian(data[key].t));
+          meanPress.push(getMean(data[key].p));
+          medPress.push(getMedian(data[key].p));
+          meanSpeeds.push(getMean(data[key].s));
+          medSpeeds.push(getMedian(data[key].s));
+          id++;
+        }
       } //hasOwnProperty
     } //for loop
 
