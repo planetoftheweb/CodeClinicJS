@@ -24,28 +24,30 @@ $(function() {
     }
     return median;
   }
+// date_time,Air_Temp,Barometric_Press,Dew_Point,Relative_Humidity,Wind_Dir,Wind_Gust,Wind_Speed
+// 2011-01-01 00:05:27,18.90,30.30,15.70,87.40,144.20,15.00,12.40
 
   function processData(data) {
     var myData = [];
+    var myItem = ['date','Mean Air Temperature', 'Median Air Temperature', 'Mean Barometic Pressure', 'Median Barometic Pressure', 'Mean Wind Speed', 'Median Wind Speed'];
+    myData.push(myItem);
     for ( var key in data) {
       if (data.hasOwnProperty(key)) {
+        myItem = [];
         var airTemp = data[key].t;
         var baroPress = data[key].p;
         var winSpeed = data[key].s;
 
-        var myObject = {
-            date: key,
-            temp: {mean: getMean(airTemp), median: getMedian(airTemp) },
-            press: {mean: getMean(baroPress), median:getMedian(baroPress) },
-            speed: {mean: getMean(winSpeed), median:getMedian(winSpeed) }
-        };
-        myData.push(myObject);
-      }
-    }
+        myItem.push(key, getMean(airTemp), getMedian(airTemp), getMean(baroPress),getMedian(baroPress),getMean(winSpeed),getMedian(winSpeed));
+        myData.push(myItem);
+      } //hasOwnProperty
+    } //for loop
+
     return myData;
-  }
+  } //processData
 
   var chartData = processData(jsonReturnData);
+  console.log(chartData);
 
   document.rangeform.onsubmit=function() {
     var from = new Date(document.rangeform.from.value);
@@ -65,40 +67,17 @@ $(function() {
 
   var chart = c3.generate({
     data: {
-        x : 'date_time',
-  		  xFormat: '%Y-%m-%d',
-  			url: 'data/2011.csv',
-  			type: 'bar',
+        x: 'date',
+        columns: chartData,
+        type: 'bar',
         groups: [
-            ['Air_Temp','Barometric_Press','Wind_Speed']
-        ],
-        hide: ['Dew_Point','Relative_Humidity','Wind_Dir','Wind_Gust'],
-  		  onclick: function (d) {
-  		  	//console.log(d);
-  		  }
-    },
-    color: {
-        pattern: ['#C94C24', '#2D8BCF', '#A2CEA5', 'transparent']
-    },
-        subchart: {
-        show: true
+          ['2015-03-23','2015-03-24','2015-03-25']
+        ]
     },
     axis: {
         x: {
-            type: 'category',
-            tick: {
-                count: 12,
-                format: '%Y-%m-%d %H:%M:%S',
-  				      rotate: 0,
-  							culling: {
-                    max: 12 // the number of tick texts will be adjusted to less than this value
-                }
-            }
+            type: 'category' // this needed to load string x value
         }
-    },
-    legend: {
-  		  hide: ['Dew_Point','Relative_Humidity','Wind_Dir','Wind_Gust'],
-  		  position: 'bottom'
-  	}
+    }
   });
 });
