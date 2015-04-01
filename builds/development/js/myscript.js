@@ -1,7 +1,22 @@
 $(function() {
   'use strict';
-  var chartData;
-  var chart;
+  var chart,
+      fromDate,
+      toDate,
+      last30,
+      yesterday;
+
+// Functions ------------------------------
+  function formatDate(date, divider ) {
+    var month = date.getMonth()+1,
+    day = date.getDate(),
+    year = date.getFullYear();
+
+    if (month < 9) { month = '0' + month; }
+    if (day < 9) { day = '0' + day; }
+
+    return ('' + year + divider + month + divider + day);
+  }
 
   function getMean(myArray) {
       var mean = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
@@ -88,26 +103,42 @@ $(function() {
   } //processData
 
 
-$.getJSON( 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',{
-    startDate: '20150301',
-    endDate: 20150321
-  })
-  .always(function() {
-    chartData = processData(jsonReturnData);
-    initChart(chartData);
-  }); // Function
-}); // jqxhr
+  fromDate = new Date();
+  fromDate.setDate(fromDate.getDate() - 31);
+
+  toDate = new Date();
+  toDate.setDate(toDate.getDate() - 1);
+
+  document.forms.rangeform.from.value = formatDate(fromDate, '-');
+  document.forms.rangeform.to.value = formatDate(toDate, '-');
+
+
+$.ajax({
+    url: 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',
+    jsonpCallback: 'jsonReturnData',
+    dataType: 'jsonp',
+    data: {
+        startDate: formatDate(fromDate, ''),
+        endDate: formatDate(toDate, ''),
+        format: 'json'
+    },
+    success: function( response ) {
+      initChart(processData(response));
+    }
+});
+
+document.forms.rangeform.addEventListener('change', function(e) {
+  console.log(e.target.value);     
+  console.log(e.target.name);     
+}, false);
 
 //Events
   document.rangeform.onsubmit=function() {
-    'use strict';
     var from = new Date(document.rangeform.from.value);
     var to = new Date(document.rangeform.to.value);
   	var earliest = new Date('2011-01-01');
-  	var yesterday = new Date();
   	var validDate = true;
   	//var invalidMessage = '';
-  	yesterday.setDate(yesterday.getDate() - 1);
 
   	if (from < earliest || to >= yesterday) {
   		 validDate = false;
@@ -115,3 +146,4 @@ $.getJSON( 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',{
   	}
     	return false;
   };
+});
