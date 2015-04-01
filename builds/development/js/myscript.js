@@ -1,6 +1,7 @@
 $(function() {
   'use strict';
-
+  var chartData;
+  var chart;
 
   function getMean(myArray) {
       var mean = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
@@ -21,6 +22,36 @@ $(function() {
     }
     return median.toFixed(2);
   }
+
+  function initChart(data) {
+    chart = c3.generate({
+      data: {
+          x: 'x',
+          columns: data,
+          type: 'bar',
+          groups: [
+              ['Mean Temperature', 'Median Temperature', 'Mean Pressure', 'Median Pressure', 'Median Speed', 'Mean Speed']
+          ]
+      },
+      bar: {
+          width: {
+              ratio: 0.9
+          }
+      },
+      axis: {
+          x: {
+              type: 'timeseries',
+              tick: {
+                  format: '%Y-%m-%d'
+              }
+          }
+      },
+      subchart: {
+          show: true
+      }
+    }); //generate chart
+  }
+
 
   function processData(data) {
     var myData = [];
@@ -57,14 +88,19 @@ $(function() {
   } //processData
 
 
-$.getJSON('http://foundationphp.com/phpclinic/podata.php?startDate=20150301&endDate=20150321&raw&callback=?', function(data) {
-  console.log(jsonReturnData);
-});
+$.getJSON( 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',{
+    startDate: '20150301',
+    endDate: 20150321
+  })
+  .always(function() {
+    chartData = processData(jsonReturnData);
+    initChart(chartData);
+  }); // Function
+}); // jqxhr
 
-
-  var chartData = processData(jsonReturnData);
-
+//Events
   document.rangeform.onsubmit=function() {
+    'use strict';
     var from = new Date(document.rangeform.from.value);
     var to = new Date(document.rangeform.to.value);
   	var earliest = new Date('2011-01-01');
@@ -79,31 +115,3 @@ $.getJSON('http://foundationphp.com/phpclinic/podata.php?startDate=20150301&endD
   	}
     	return false;
   };
-
-  var chart = c3.generate({
-    data: {
-        x: 'x',
-        columns: chartData,
-        type: 'bar',
-        groups: [
-            ['Mean Temperature', 'Median Temperature', 'Mean Pressure', 'Median Pressure', 'Median Speed', 'Mean Speed']
-        ]
-    },
-    bar: {
-        width: {
-            ratio: .9
-        }
-    },
-    axis: {
-        x: {
-            type: 'timeseries',
-            tick: {
-                format: '%Y-%m-%d'
-            }
-        }
-    },
-    subchart: {
-        show: true
-    }
-  }); //generate chart
-}); // Function
