@@ -1,6 +1,7 @@
 $(function() {
   'use strict';
 
+
   function getMean(myArray) {
       var mean = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
       return mean.toFixed(2);
@@ -55,8 +56,13 @@ $(function() {
     return myData;
   } //processData
 
+
+$.getJSON('http://foundationphp.com/phpclinic/podata.php?startDate=20150301&endDate=20150321&raw&callback=?', function(data) {
+  console.log(jsonReturnData);
+});
+
+
   var chartData = processData(jsonReturnData);
-  console.log(chartData);
 
   document.rangeform.onsubmit=function() {
     var from = new Date(document.rangeform.from.value);
