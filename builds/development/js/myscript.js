@@ -2,27 +2,23 @@ $(function() {
   'use strict';
 
   function getMean(myArray) {
-    if (myArray!==null) {
-      var average = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
-      return average;
-    }
+      var mean = myArray.reduce(function(a, b) { return a + b; })/myArray.length;
+      return mean.toFixed(2);
   }
 
   function getMedian(myArray) {
     var median;
-    if (myArray!==null) {
-      var sorted = myArray.sort(myArray);
+    var sorted = myArray.sort(myArray);
 
-      var middle = ((sorted.length) / 2);
-      if(sorted.length % 2 === 0) {
-        var medianA = sorted[middle];
-        var medianB = sorted[middle-1];
-        median = (medianA + medianB) / 2;
-      } else {
-        median = sorted[middle + 1];
-      }
+    var middle = Math.floor((sorted.length) / 2);
+    if(sorted.length % 2 === 0) {
+      var medianA = sorted[middle];
+      var medianB = sorted[middle-1];
+      median = (medianA + medianB) / 2;
+    } else {
+      median = sorted[middle + 1];
     }
-    return median;
+    return median.toFixed(2);
   }
 
   function processData(data) {
@@ -87,6 +83,11 @@ $(function() {
             ['Mean Temperature', 'Median Temperature', 'Mean Pressure', 'Median Pressure', 'Median Speed', 'Mean Speed']
         ]
     },
+    bar: {
+        width: {
+            ratio: .9
+        }
+    },
     axis: {
         x: {
             type: 'timeseries',
@@ -94,6 +95,9 @@ $(function() {
                 format: '%Y-%m-%d'
             }
         }
+    },
+    subchart: {
+        show: true
     }
   }); //generate chart
 }); // Function
