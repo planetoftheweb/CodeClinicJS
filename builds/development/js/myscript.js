@@ -8,12 +8,14 @@ $(function() {
 
 // Functions ------------------------------
   function formatDate(date, divider ) {
-    var month = date.getMonth()+1,
-    day = date.getDate(),
-    year = date.getFullYear();
+    var someday = new Date(date);
 
-    if (month < 9) { month = '0' + month; }
-    if (day < 9) { day = '0' + day; }
+    var month = someday.getUTCMonth()+1,
+    day = someday.getUTCDate(),
+    year = someday.getUTCFullYear();
+
+    if (month <= 9) { month = '0' + month; }
+    if (day <= 9) { day = '0' + day; }
 
     return ('' + year + divider + month + divider + day);
   }
@@ -102,7 +104,24 @@ $(function() {
     return myData;
   } //processData
 
+  //Load Chart -------------------
+  function loadChart() {
+    $.ajax({
+        url: 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',
+        jsonpCallback: 'jsonReturnData',
+        dataType: 'jsonp',
+        data: {
+            startDate: formatDate(fromDate, ''),
+            endDate: formatDate(toDate, ''),
+            format: 'json'
+        },
+        success: function( response ) {
+          initChart(processData(response));
+        }
+    });
+  }
 
+  //Set up Dates -------------------
   fromDate = new Date();
   fromDate.setDate(fromDate.getDate() - 31);
 
@@ -112,38 +131,17 @@ $(function() {
   document.forms.rangeform.from.value = formatDate(fromDate, '-');
   document.forms.rangeform.to.value = formatDate(toDate, '-');
 
+  loadChart();
 
-$.ajax({
-    url: 'http://foundationphp.com/phpclinic/podata.php?raw&callback=?',
-    jsonpCallback: 'jsonReturnData',
-    dataType: 'jsonp',
-    data: {
-        startDate: formatDate(fromDate, ''),
-        endDate: formatDate(toDate, ''),
-        format: 'json'
-    },
-    success: function( response ) {
-      initChart(processData(response));
-    }
-});
-
+//Events -------------------
 document.forms.rangeform.addEventListener('change', function(e) {
-  console.log(e.target.value);     
-  console.log(e.target.name);     
+    fromDate = new Date(document.rangeform.from.value);
+    toDate = new Date(document.rangeform.to.value);
+
+    fromDate = fromDate.toUTCString();
+    toDate = toDate.toUTCString();
+
+    loadChart();
 }, false);
 
-//Events
-  document.rangeform.onsubmit=function() {
-    var from = new Date(document.rangeform.from.value);
-    var to = new Date(document.rangeform.to.value);
-  	var earliest = new Date('2011-01-01');
-  	var validDate = true;
-  	//var invalidMessage = '';
-
-  	if (from < earliest || to >= yesterday) {
-  		 validDate = false;
-  		$('#badDate').modal('show');
-  	}
-    	return false;
-  };
 });

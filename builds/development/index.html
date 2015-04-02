@@ -27,14 +27,10 @@
         </div>
       </div>
       <div class="row dateselector">
-        <div class="col-xs-12 col-sm-7 center">
-          <form class="row form-inline" name="rangeform">
-            <div class="col-xs-12 col-sm-6 form-group">
-              <label>from <input type="date" required name="from" class="form-control"></label>
-            </div>
-            <div class="col-xs-12 col-sm-6 form-group">
-              <label>to <input type="date" required class="form-control" name="to"></label>
-            </div>
+        <div class="col-sm-12 center">
+          <form class="row form-inline" name="rangeform"> 
+            <label>from&nbsp;<input type="date" required name="from" class="form-control"></label>
+            <label>to&nbsp;<input type="date" required class="form-control" name="to"></label>
           </form>
         </div><!-- col-md-12 -->
       </div>
@@ -59,24 +55,6 @@
       <p class="col-md-6">You can learn several things from Code Clinic: different approaches to solving a problem, the pros and cons of different languages, and some tips and tricks to incorporate into your own coding practices.</p>
     </div>
   </footer>
-
-<div class="modal fade" id="badDate" tabindex="-1" role="dialog" aria-labelledby="badDate" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>Your dates are out of range, dates must be:</p>
-        <ol>
-          <li>A date earlier than today</li>
-          <li>No earlier than 2011-01-01</li>
-          <li>Ranges must also not be bigger than 30 days</li>
-        </ol>
-      <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
-      </div>
-      <div class="modal-footer">
-    </div>
-  </div>
-</div>
-</div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
