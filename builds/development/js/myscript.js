@@ -7,7 +7,7 @@ function getMean(myArray) {
     return a + b;
   })/myArray.length;
   return mean.toFixed(2);
-}
+} //getMean
 
 function getMedian(myArray) {
   var median;
@@ -23,12 +23,39 @@ function getMedian(myArray) {
   }
 
   return median.toFixed(2);
-}
+} //getMedian
 
-var test = [1,2,2,4,10];
-console.log('Mean: ' + getMean(test));
-console.log('Median: ' + getMedian(test));
 
+function processData(data) {
+  var myData = [];
+
+  var myDates = ['x'];
+  var meanTemps = ['Mean Temperature'];
+  var medTemps = ['Median Temperature'];
+  var meanPress = ['Mean Pressure'];
+  var medPress = ['Median Pressure'];
+  var meanSpeeds = ['Mean Speed'];
+  var medSpeeds = ['Median Speed'];
+
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      if ((data[key].t !== null) 
+        && (data[key].p !== null) 
+        && (data[key].s !== null)) {
+        myDates.push(key);
+        meanTemps.push(getMean(data[key].t));
+        medTemps.push(getMedian(data[key].t));
+        meanPress.push(getMean(data[key].p));
+        medPress.push(getMedian(data[key].p));
+        meanSpeeds.push(getMean(data[key].s));
+        medSpeeds.push(getMedian(data[key].s));
+      } //data is not null
+    } // hasOwnProperty
+  } // for key in data
+
+  myData.push(myDates, meanTemps, medTemps, meanPress, medSpeeds, meanSpeeds);
+  return myData;
+} // Process Data
 
 
 function loadChart() {
@@ -42,7 +69,7 @@ function loadChart() {
       format: 'json'
     },
     success: function(response) {
-      console.log(response);
+      console.log(processData(response));
     } //success
 
   }); //AJAX Call
