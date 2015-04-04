@@ -57,6 +57,38 @@ function processData(data) {
   return myData;
 } // Process Data
 
+function generateChart(data) {
+  var chart = c3.generate({
+
+    data: {
+      x: 'x',
+      columns: data,
+      type: 'bar',
+      groups: [
+          ['Mean Temperature','Median Temperature',
+            'Mean Pressure','Median Pressure',
+            'Mean Speed', 'Median Speed']
+      ]
+    },
+    bar: {
+      width: {
+        ratio: 0.9
+      }
+    },
+    axis: {
+      x: {
+        type: 'timeseries',
+        tick: {
+          format: '%Y-%m-%d'
+        }
+      } // x
+    }, // axis
+    subchart: {
+      show: true
+    } //subchart
+  }); // chart
+} // generateChart
+
 
 function loadChart() {
   $.ajax({
@@ -64,12 +96,12 @@ function loadChart() {
     jsonpCallback: 'jsonReturnData',
     dataType: 'jsonp',
     data: {
-      startDate:'20150301',
-      endDate: '20150302',
+      startDate:'20150305',
+      endDate: '20150326',
       format: 'json'
     },
     success: function(response) {
-      console.log(processData(response));
+      generateChart(processData(response));
     } //success
 
   }); //AJAX Call
