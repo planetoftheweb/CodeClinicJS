@@ -136,4 +136,18 @@ document.forms.rangeform.to.value = formatDate(toDate, '-');
 
 loadChart();
 
+// Events -------
+
+document.forms.rangeform.addEventListener('change', function(e) {
+  fromDate = new Date(document.rangeform.from.value);
+  toDate = new Date(document.rangeform.to.value);
+
+  fromDate = fromDate.toUTCString();
+  toDate = toDate.toUTCString();
+
+  loadChart();
+
+}, false);
+
+
 }); // Page Loaded
