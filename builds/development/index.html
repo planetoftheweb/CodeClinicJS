@@ -40,7 +40,29 @@
       <input type="text" required name="url" placeholder="Site location" value="evilsite.html" class="form-control">
       <button type="submit" class="btn btn-info">Compare</button>
     </form>
-    <div id="results" class="photogrid"></div>
+
+    <div id="image-data" style="display:none">
+
+      RGB
+        <div class="progress progress-danger">
+          <div id="red" class="bar" style="width: 0%;"></div>
+  </div>
+  <div class="progress progress-success">
+          <div id="green" class="bar" style="width: 0%;"></div>
+  </div>
+  <div class="progress">
+          <div id="blue" class="bar" style="width: 0%;"></div>
+  </div>
+
+  Brightness
+  <div class="progress progress-warning">
+          <div id="brightness" class="bar" style="width: 0%;"></div>
+  </div>
+  </div>
+
+
+
+  <div id="results" class="photogrid"></div>
   </div>
   <!-- urllocation -->
   </div><!-- row -->

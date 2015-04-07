@@ -172,4 +172,10 @@ h1, h2, h3, h4, h5, h6 {
 
 #results.photogrid img {
   width: 20%;
+  opacity: .2;
+}
+
+#results.photogrid img.match {
+  border: 3px solid #D33682;
+  opacity: 1;
 }

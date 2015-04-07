@@ -1,16 +1,28 @@
 $(function() {
   'use strict';
 
-  var target, myImages, droppedImage;
+  var target, myImages, droppedImage, file;
   var resultsText = document.querySelector('#results');
 
   target = $('.dropzone');
+
+  function onComplete(data) {
+    console.log('done');
+  }
 
   function compareImages(imageURL) {
       //the following gets an image data from a URL
       var xhr = new XMLHttpRequest();
       xhr.onload = function(e) {
-        resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img class="imagesearched" src="' + e.target.responseURL + '" alt="photo">');
+
+        resemble(e.target.responseURL).compareTo(file).onComplete(function(data) {
+          if (data.misMatchPercentage < 20) {
+            resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img class="match" src="' + e.target.responseURL + '" alt="photo">');
+          } else {
+            resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img src="' + e.target.responseURL + '" alt="photo">');
+          }
+        });
+
       }; //xmr
       xhr.open('GET', imageURL, true);
       xhr.responseType = 'blob';
@@ -63,7 +75,7 @@ $(function() {
       return false;
     }).
     bind('drop', function(e) {
-      var file, fileReader;
+      var fileReader;
       file = e.originalEvent.dataTransfer.files[0];
       e.stopPropagation();
       e.preventDefault();
