@@ -8,7 +8,7 @@ $(function() {
       //the following gets an image data from a URL
       var xhr = new XMLHttpRequest();
       xhr.onload = function(e) {
-        //console.log(e);
+        console.log(e);
       }; //xmr
       xhr.open('GET', imageURL, true);
       xhr.responseType = 'blob';
@@ -60,18 +60,13 @@ $(function() {
       return false;
     }).
     bind('drop', function(e) {
-      var file, droppedImage, fileReader;
-
+      var file, fileReader;
       file = e.originalEvent.dataTransfer.files[0];
-
       e.stopPropagation();
       e.preventDefault();
-
       target.removeClass('dragover');
-
       droppedImage = new Image();
       fileReader = new FileReader();
-
       fileReader.onload = function(e) {
         droppedImage.src = e.target.result;
         target.html(droppedImage);
@@ -80,13 +75,18 @@ $(function() {
       onDrop(file);
     });
   }
-
-  myImages = getImages('evilsite.html');
-
-  dropZone(target, function(file){
-
+    dropZone(target, function(file){
   }); // execute when an image is dropped
 
-
+  //Wait for events
+  document.forms.compare.addEventListener('submit', function(e) {
+    var formURL = document.compare.url.value;
+    e.preventDefault();
+    if (droppedImage !== undefined) {
+      getImages(formURL);
+    } else {
+      alert('Please drop an image in the source image area');
+    }
+  }, false);
 
 }); // Page Loaded
