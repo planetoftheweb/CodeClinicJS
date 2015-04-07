@@ -2,7 +2,7 @@ $(function() {
   'use strict';
 
   var target, myImages, droppedImage;
-  target = $('#dropzone');
+  target = $('.dropzone');
 
   function compareImages(imageURL) {
       //the following gets an image data from a URL
@@ -32,9 +32,7 @@ $(function() {
 
       for (var item in list) {
         if (list.hasOwnProperty(item)) {
-          if (droppedImage !== undefined) {
             compareImages(list[item]);
-          }
         } //hasOwnProperty
       } // for item in list
 
@@ -83,8 +81,12 @@ $(function() {
     });
   }
 
-
-
   myImages = getImages('evilsite.html');
+
+  dropZone(target, function(file){
+
+  }); // execute when an image is dropped
+
+
 
 }); // Page Loaded
