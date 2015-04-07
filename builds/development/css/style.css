@@ -1,15 +1,16 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800|Roboto+Slab:400,100,300,700);
-
 /**  Basic Page CSS **/
 
-html { font-size: 62.5%; }
+html {
+  font-size: 62.5%;
+}
 
-body{
+body {
   font-family: "Roboto Slab", sans-serif;
   font-weight: 300;
   font-size: 2em;
   position: relative;
-	background-color: #093641;
+  background-color: #093641;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -19,25 +20,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header {
-	background-color: #093641;
-	padding: 50px 0;
+  background-color: #093641;
+  padding: 50px 0;
 }
 
-.header h1{
-	font-size: 6rem;
-	color: #37A198;
+.header h1 {
+  font-size: 6rem;
+  color: #37A198;
 }
 
-.header h2{
-	font-family: 'Roboto Slab';
-	font-weight: 300;
-	color: #EEE8D6;
+.header h2 {
+  font-family: 'Roboto Slab';
+  font-weight: 300;
+  color: #EEE8D6;
 }
 
 .header .language {
-	font-family: 'Roboto Slab';
-	color: #F9B640;
-	font-size: 3rem;
+  font-family: 'Roboto Slab';
+  color: #F9B640;
+  font-size: 3rem;
 }
 
 .header .language img {
@@ -45,58 +46,113 @@ h1, h2, h3, h4, h5, h6 {
   vertical-align: 0px;
 }
 
-
-.header .branding{
-	margin: 0 auto;
+.header .branding {
+  margin: 0 auto;
 }
 
-.header .branding .logo{
-	width: 10%;
-	min-width: 100px;
-	padding-right: 10px;
-	float: left;
+.header .branding .logo {
+  width: 10%;
+  min-width: 100px;
+  padding-right: 10px;
+  float: left;
 }
 
 .main {
-	background-color: #FDF6E4;
-	padding: 50px 0;
-	font-size: 2.5rem;
+  background-color: #FDF6E4;
+  padding: 50px 0;
+  font-size: 2.5rem;
 }
 
 .main figcaption {
-	text-align: center;
-	font-weight: bold;
-	color: #C94C24;
+  text-align: center;
+  font-weight: bold;
+  color: #C94C24;
 }
 
 .center {
-    float: none;
-    margin: 0 auto;
-    text-align: center;
+  float: none;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .dateselector form {
-	font-size: 1.8rem;
-	color: #E76C5A;
-	margin: 20px 0;
+  font-size: 1.8rem;
+  color: #E76C5A;
+  margin: 20px 0;
 }
 
 .dateselector input[type="date"] {
-	background-color: #FDF6E4;
+  background-color: #FDF6E4;
 }
-
 
 .footer {
   font-family: "Open Sans", sans-serif;
-	color: #EEE8D6;
-	margin-top: 20px;
+  color: #EEE8D6;
+  margin-top: 20px;
 }
 
 .footer h2 {
-	font-size: 2rem;
-	color: #EEC857;
-	margin-bottom: 10px;
+  font-size: 2rem;
+  color: #EEC857;
+  margin-bottom: 10px;
 }
+
 .footer p {
-	font-size: 1.5rem;
+  font-size: 1.5rem;
+}
+/*app specific css*/
+
+.app h2 {
+  font-family: "Roboto Slab", sans-serif;
+  font-weight: bold;
+  color: RGBA(38, 139, 210, 1);
+}
+
+.instructions {
+  margin: 20px 0;
+}
+
+.app p {
+  font-family: "Open Sans", sans-serif;
+  font-size: .8em;
+}
+
+.app .dropzone {
+  margin-top: 20px;
+  background-color: #ccc;
+  font-size: 32px;
+  width: 100%;
+  padding: 10px;
+}
+
+.app .dropzone p {
+  padding: 100px;
+  text-align: center;
+}
+
+.app .dropzone.dragover {
+  border: 10px dashed #0088CC;
+}
+
+.app .dropzone img {
+  width: 100%;
+}
+/*evil page*/
+
+.evil .main h1 {
+  font-family: "Roboto Slab", sans-serif;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.evil .photogrid {
+  -moz-column-width: 12em;
+  -webkit-column-width: 12em;
+  -moz-column-gap: .5em;
+  -webkit-column-gap: .5em;
+}
+
+.evil .photogrid img {
+  width: 100%;
+  margin-bottom: .5em;
 }
