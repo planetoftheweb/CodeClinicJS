@@ -137,6 +137,12 @@ h1, h2, h3, h4, h5, h6 {
 .app .dropzone img {
   width: 100%;
 }
+
+.urllocation input[type=text] {
+  width: 70%;
+}
+
+#results
 /*evil page*/
 
 .evil .main h1 {
@@ -145,14 +151,25 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
-.evil .photogrid {
+.photogrid {
   -moz-column-width: 12em;
   -webkit-column-width: 12em;
   -moz-column-gap: .5em;
   -webkit-column-gap: .5em;
 }
 
-.evil .photogrid img {
+.photogrid img {
   width: 100%;
   margin-bottom: .5em;
+}
+
+#results.photogrid {
+  -moz-column-width: none;
+  -webkit-column-width: none;
+  -moz-column-gap: 0;
+  -webkit-column-gap: 0;
+}
+
+#results.photogrid img {
+  width: 20%;
 }

@@ -2,13 +2,15 @@ $(function() {
   'use strict';
 
   var target, myImages, droppedImage;
+  var resultsText = document.querySelector('#results');
+
   target = $('.dropzone');
 
   function compareImages(imageURL) {
       //the following gets an image data from a URL
       var xhr = new XMLHttpRequest();
       xhr.onload = function(e) {
-        console.log(e);
+        resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img class="imagesearched" src="' + e.target.responseURL + '" alt="photo">');
       }; //xmr
       xhr.open('GET', imageURL, true);
       xhr.responseType = 'blob';
@@ -30,9 +32,10 @@ $(function() {
         } // hasOwnProperty
       } //key in data
 
+      resultsText.innerHTML = '<h3>Searching Images...</h3>';
       for (var item in list) {
         if (list.hasOwnProperty(item)) {
-            compareImages(list[item]);
+          compareImages(list[item]);
         } //hasOwnProperty
       } // for item in list
 
@@ -75,8 +78,7 @@ $(function() {
       onDrop(file);
     });
   }
-    dropZone(target, function(file){
-  }); // execute when an image is dropped
+  dropZone(target, function(file) {}); // execute when an image is dropped
 
   //Wait for events
   document.forms.compare.addEventListener('submit', function(e) {
@@ -85,7 +87,7 @@ $(function() {
     if (droppedImage !== undefined) {
       getImages(formURL);
     } else {
-      alert('Please drop an image in the source image area');
+      resultsText.innerHTML = '<p class="alert alert-danger">Sorry, you must drop an image to compare against before hitting the compare button.</p>';
     }
   }, false);
 

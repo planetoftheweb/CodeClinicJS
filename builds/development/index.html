@@ -33,14 +33,17 @@
     <p>Drop an image into this box to see if it's being used on a web page you specify.</p>
     </div>
   </div>
-  <div class="urllocation">
-    <form class="row form-inline" name="compare"> 
-      <label>URL: <input type="text" required name="url" placeholder="Site location" class="form-control"></label>
+  <div class="urllocation col-sm-6">
+    <h2>Check Against</h2>
+    <p>Type the location that you want to check against.</p>
+    <form class="form-inline" name="compare"> 
+      <input type="text" required name="url" placeholder="Site location" value="evilsite.html" class="form-control">
       <button type="submit" class="btn btn-info">Compare</button>
-    </form>          
+    </form>
+    <div id="results" class="photogrid"></div>
   </div>
-  </div>
-  <!-- row -->
+  <!-- urllocation -->
+  </div><!-- row -->
     </div><!-- container -->
   </div><!-- main -->
   <footer class="footer container">
@@ -58,6 +61,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="js/resemble.js"></script>
 <script src="js/myscript.js"></script>
 </body>
 </html>
