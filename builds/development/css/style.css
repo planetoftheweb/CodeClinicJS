@@ -142,7 +142,6 @@ h1, h2, h3, h4, h5, h6 {
   width: 70%;
 }
 
-#results
 /*evil page*/
 
 .evil .main h1 {
@@ -150,6 +149,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+
+
+/* photogrid */
 
 .photogrid {
   -moz-column-width: 12em;
