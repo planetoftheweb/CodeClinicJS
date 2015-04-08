@@ -6,10 +6,6 @@ $(function() {
 
   target = $('.dropzone');
 
-  function onComplete(data) {
-    console.log('done');
-  }
-
   function compareImages(imageURL) {
       //the following gets an image data from a URL
       var xhr = new XMLHttpRequest();
