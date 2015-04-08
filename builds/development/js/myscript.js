@@ -14,7 +14,6 @@ $(function() {
       //the following gets an image data from a URL
       var xhr = new XMLHttpRequest();
       xhr.onload = function(e) {
-
         resemble(e.target.responseURL).compareTo(file).onComplete(function(data) {
           if (data.misMatchPercentage < 20) {
             resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img class="match" src="' + e.target.responseURL + '" alt="photo">');
@@ -22,8 +21,7 @@ $(function() {
             resultsText.querySelector('h3').insertAdjacentHTML('afterend', '<img src="' + e.target.responseURL + '" alt="photo">');
           }
         });
-
-      }; //xmr
+      }; //xhr
       xhr.open('GET', imageURL, true);
       xhr.responseType = 'blob';
       xhr.send();

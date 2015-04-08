@@ -23,49 +23,27 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti placeat laudantium, doloribus tenetur nulla quisquam repellat quas, consectetur minima. Atque nisi similique, quasi nobis autem maiores quam tempore debitis eaque!</p>
+          <p>This project examines how a front end for an image search algorithm would work with JavaScript to try to find similar images. A photographer will take a picture and post it on the internet, only to discover someone has stolen their image and placed a copy of that image on their website.</p>
         </div>
   </div>
   <div class="row app">
-    <div class="instructions col-sm-6">
-    <h2>Source Image</h2>
-    <div id="dropzone" class="dropzone">
-    <p>Drop an image into this box to see if it's being used on a web page you specify.</p>
-    </div>
-  </div>
-  <div class="urllocation col-sm-6">
-    <h2>Check Against</h2>
-    <p>Type the location that you want to check against.</p>
-    <form class="form-inline" name="compare"> 
-      <input type="text" required name="url" placeholder="Site location" value="evilsite.html" class="form-control">
-      <button type="submit" class="btn btn-info">Compare</button>
-    </form>
-
-    <div id="image-data" style="display:none">
-
-      RGB
-        <div class="progress progress-danger">
-          <div id="red" class="bar" style="width: 0%;"></div>
-  </div>
-  <div class="progress progress-success">
-          <div id="green" class="bar" style="width: 0%;"></div>
-  </div>
-  <div class="progress">
-          <div id="blue" class="bar" style="width: 0%;"></div>
-  </div>
-
-  Brightness
-  <div class="progress progress-warning">
-          <div id="brightness" class="bar" style="width: 0%;"></div>
-  </div>
-  </div>
-
-
-
-  <div id="results" class="photogrid"></div>
-  </div>
-  <!-- urllocation -->
-  </div><!-- row -->
+        <div class="instructions col-sm-6">
+          <h2>Source Image</h2>
+          <div id="dropzone" class="dropzone">
+            <p>Drop an image into this box to see if it's being used on a web page you specify.</p>
+          </div>
+  <!-- dropzone -->
+        </div><!-- col-sm-6 -->
+        <div class="urllocation col-sm-6">
+          <h2>Check Against</h2>
+          <p>Type the location that you want to check against.</p>
+          <form class="form-inline" name="compare"> 
+            <input type="text" required name="url" placeholder="Site location" value="evilsite.html" class="form-control">
+            <button type="submit" class="btn btn-info">Compare</button>
+          </form>
+          <div id="results" class="photogrid"></div>
+        </div><!-- urllocation -->
+      </div><!-- row -->
     </div><!-- container -->
   </div><!-- main -->
   <footer class="footer container">
@@ -79,8 +57,6 @@
       <p class="col-md-6">You can learn several things from Code Clinic: different approaches to solving a problem, the pros and cons of different languages, and some tips and tricks to incorporate into your own coding practices.</p>
     </div>
   </footer>
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="js/resemble.js"></script>
