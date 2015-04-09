@@ -6,8 +6,22 @@ $(function() {
   var resultsText = document.querySelector('#results');
 
   function compareImages(imageURL) {
-    console.log(imageURL);
-  }
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(e) {
+      resemble(e.target.responseURL).compareTo(file).onComplete(function(data) {
+        if (data.misMatchPercentage < 20) {
+          resultsText.querySelector('h3').insertAdjacentHTML('afterend', 
+            '<img class="match" src="' + e.target.responseURL + '" alt="photo">');
+        } else {
+          resultsText.querySelector('h3').insertAdjacentHTML('afterend', 
+            '<img src="' + e.target.responseURL + '" alt="photo">');
+        }
+      });// resemble call
+    }; //onload
+    xhr.open('GET', imageURL, true);
+    xhr.responseType = 'blob';
+    xhr.send();
+  } //compareImages
 
   function getImages(url) {
     var request = new XMLHttpRequest();
