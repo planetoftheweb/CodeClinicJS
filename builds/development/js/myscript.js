@@ -3,6 +3,11 @@ $(function() {
   'use strict';
   var file, droppedImage;
   var target = $('.dropzone');
+  var resultsText = document.querySelector('#results');
+
+  function getImages(url) {
+    console.log(url);
+  }
 
   function dropZone(target) {
     target
@@ -37,4 +42,15 @@ $(function() {
 
   dropZone(target);
 
+  // Wait for events
+
+    document.forms.compare.addEventListener('submit', function(e) {
+      var formURL = document.compare.url.value;
+      e.preventDefault();
+      if (droppedImage !== undefined) {
+        getImages(formURL);
+      } else {
+        resultsText.innerHTML = '<p class="alert alert-danger">Sorry, you must drop and image to compare against before hitting the compare button</p>';
+      } 
+    }); // form submitted
 }); // page loaded
