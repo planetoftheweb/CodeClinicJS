@@ -5,9 +5,37 @@ $(function() {
   var target = $('.dropzone');
   var resultsText = document.querySelector('#results');
 
-  function getImages(url) {
-    console.log(url);
+  function compareImages(imageURL) {
+    console.log(imageURL);
   }
+
+  function getImages(url) {
+    var request = new XMLHttpRequest();
+    var list = [];
+    request.onload = function(){
+      var data = this.responseXML.querySelectorAll('img');
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          var image = data[key].src;
+          if ((image !== undefined) &&
+            ((image.lastIndexOf('.jpg') >0))) {
+            list.push(image);
+          } //image filters
+        } //hasOwnProperty
+      } // key in data
+
+      resultsText.innerHTML = '<h3>Searching Images...</h3>';
+      for (var item in list) {
+        if (list.hasOwnProperty(item)) {
+          compareImages(list[item]);
+        } //hasOwnProperty
+      } // for item in list
+    }; // request
+
+    request.open('GET', url);
+    request.responseType = 'document';
+    request.send();
+  } //get Images
 
   function dropZone(target) {
     target
