@@ -112,11 +112,6 @@ h1, h2, h3, h4, h5, h6 {
   margin: 20px 0;
 }
 
-.app #queen {
-  width: 100%;
-  max-width: 200px;
-}
-
 .app #boardgame {
   width: 100%;
 }
