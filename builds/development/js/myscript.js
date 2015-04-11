@@ -1,98 +1,97 @@
 $(function() {
-
   'use strict';
-  var file, droppedImage;
-  var target = $('.dropzone');
-  var resultsText = document.querySelector('#results');
 
-  function compareImages(imageURL) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function(e) {
-      resemble(e.target.responseURL).compareTo(file).onComplete(function(data) {
-        if (data.misMatchPercentage < 20) {
-          resultsText.querySelector('h3').insertAdjacentHTML('afterend', 
-            '<img class="match" src="' + e.target.responseURL + '" alt="photo">');
-        } else {
-          resultsText.querySelector('h3').insertAdjacentHTML('afterend', 
-            '<img src="' + e.target.responseURL + '" alt="photo">');
+
+
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function(e) {
+    //console.log(e.target.responseText);
+    var insert = document.getElementById('A1');
+    insert.innerHTML = e.target.responseText;
+  }; //xhr
+  xhr.open('GET', 'images/queen.svg', true);
+  xhr.send();
+
+
+  var OCCUPIED = 1; // field is in use
+  var FREE = 0; // field is not in use
+  var OUTPUT = 1; // when 1 show solutions
+
+
+  function Queen() {
+    this.width = 8;
+    this.lastRow = 7;
+    this.columns = [];
+    this.rcolumns = [];
+
+    this.diagonals1 = [];
+    this.diagonals2 = [];
+    this.solutions = [];
+
+    for (var index = 0; index < 15; index++) {
+      if (index < 8) {
+        this.columns[index] = -1;
+      }
+      this.diagonals1[index] = 0;
+      this.diagonals2[index] = 0;
+    }
+
+    // starts the search with initial parameters
+    this.run = function() {
+      this.calculate(0);
+    };
+
+    // searches for all possible solutions
+    this.calculate = function(row) {
+      for (var column = 0; column < 8; ++column) {
+        // current column blocked?
+        if (this.columns[column] >= 0) {
+          continue;
         }
-      });// resemble call
-    }; //onload
-    xhr.open('GET', imageURL, true);
-    xhr.responseType = 'blob';
-    xhr.send();
-  } //compareImages
 
-  function getImages(url) {
-    var request = new XMLHttpRequest();
-    var list = [];
-    request.onload = function(){
-      var data = this.responseXML.querySelectorAll('img');
-      for (var key in data) {
-        if (data.hasOwnProperty(key)) {
-          var image = data[key].src;
-          if ((image !== undefined) &&
-            ((image.lastIndexOf('.jpg') >0))) {
-            list.push(image);
-          } //image filters
-        } //hasOwnProperty
-      } // key in data
+        // relating diagonale '\' depending on current row and column
+        var ixDiag1 = row + column;
+        if (this.diagonals1[ixDiag1] === OCCUPIED) {
+          continue;
+        }
 
-      resultsText.innerHTML = '<h3>Searching Images...</h3>';
-      for (var item in list) {
-        if (list.hasOwnProperty(item)) {
-          compareImages(list[item]);
-        } //hasOwnProperty
-      } // for item in list
-    }; // request
+        // relating diagonale '/' depending on current row and column
+        var ixDiag2 = this.width - 1 - row + column;
+        if (this.diagonals2[ixDiag2] === OCCUPIED) {
+          continue;
+        }
 
-    request.open('GET', url);
-    request.responseType = 'document';
-    request.send();
-  } //get Images
+        // occupying column and diagonals depending on current row and column
+        this.columns[column] = row;
+        this.diagonals1[ixDiag1] = OCCUPIED;
+        this.diagonals2[ixDiag2] = OCCUPIED;
 
-  function dropZone(target) {
-    target
-      .on('dragover', function() {
-        target.addClass('dragover');
-        return false;
-      })
-      .on('dragend', function() {
-        target.removeClass('dragover');
-        return false;
-      })
-      .on('dragleave', function() {
-        target.removeClass('dragover');
-        return false;
-      })
-      .on('drop', function(e) {
-        var fileReader;
-        file = e.originalEvent.dataTransfer.files[0];
-        e.stopPropagation();
-        e.preventDefault();
-        target.removeClass('dragover');
+        if (row === this.lastRow) {
+          this.solutions.push(this.columns.slice());
+        } else {
+          this.calculate(row + 1);
+        }
 
-        droppedImage = new Image();
-        fileReader = new FileReader();
-        fileReader.onload = function(e) {
-          droppedImage.src = e.target.result;
-          target.html(droppedImage);
-        };
-        fileReader.readAsDataURL(file);
-      }); // on drop
-  } //drop zone
+        this.columns[column] = -1;
+        this.diagonals1[ixDiag1] = FREE;
+        this.diagonals2[ixDiag2] = FREE;
+      }
+    };
+  }
 
-  dropZone(target);
+  var instance = new Queen();
+  instance.run();
+  //console.log('Found ' + instance.solutions.length + ' solutions');
 
-  // Wait for events
+  if (OUTPUT === 1) {
+    for (var indexA = 0; indexA < instance.solutions.length; ++indexA) {
+      var solution = instance.solutions[indexA];
+      var line = '';
+      for (var indexB = 0; indexB < solution.length; ++indexB) {
+        line += '(' + (indexB + 1) + ',' + (solution[indexB] + 1) + ')';
+      }
+      console.log(line);
+    }
+  }
 
-    document.forms.compare.addEventListener('submit', function(e) {
-      var formURL = document.compare.url.value;
-      e.preventDefault();
-      if (droppedImage !== undefined) {
-        getImages(formURL);
-      } else {
-        resultsText.innerHTML = '<p class="alert alert-danger">Sorry, you must drop and image to compare against before hitting the compare button</p>';
-      } 
-    }); // form submitted
 }); // page loaded

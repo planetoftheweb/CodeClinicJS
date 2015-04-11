@@ -112,73 +112,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 20px 0;
 }
 
-.app p {
-  font-family: "Open Sans", sans-serif;
-  font-size: .8em;
-}
-
-.app .dropzone {
-  margin-top: 20px;
-  background-color: #ccc;
-  font-size: 32px;
+.app #queen {
   width: 100%;
-  padding: 10px;
+  max-width: 200px;
 }
 
-.app .dropzone p {
-  padding: 100px;
-  text-align: center;
-}
-
-.app .dropzone.dragover {
-  border: 10px dashed #0088CC;
-}
-
-.app .dropzone img {
+.app #boardgame {
   width: 100%;
-}
-
-.urllocation input[type=text] {
-  width: 70%;
-}
-
-/*evil page*/
-
-.evil .main h1 {
-  font-family: "Roboto Slab", sans-serif;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-
-
-/* photogrid */
-
-.photogrid {
-  -moz-column-width: 12em;
-  -webkit-column-width: 12em;
-  -moz-column-gap: .5em;
-  -webkit-column-gap: .5em;
-}
-
-.photogrid img {
-  width: 100%;
-  margin-bottom: .5em;
-}
-
-#results.photogrid {
-  -moz-column-width: none;
-  -webkit-column-width: none;
-  -moz-column-gap: 0;
-  -webkit-column-gap: 0;
-}
-
-#results.photogrid img {
-  width: 20%;
-  opacity: .2;
-}
-
-#results.photogrid img.match {
-  border: 3px solid #D33682;
-  opacity: 1;
 }
