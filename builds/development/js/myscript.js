@@ -1,18 +1,6 @@
 $(function() {
   'use strict';
 
-
-
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function(e) {
-    //console.log(e.target.responseText);
-    var insert = document.getElementById('A1');
-    insert.innerHTML = e.target.responseText;
-  }; //xhr
-  xhr.open('GET', 'images/queen.svg', true);
-  xhr.send();
-
-
   var OCCUPIED = 1; // field is in use
   var FREE = 0; // field is not in use
   var OUTPUT = 1; // when 1 show solutions
