@@ -1,18 +1,21 @@
 $(function() {
   'use strict';
 
-  //http://code.activestate.com/recipes/578497-eight-queen-problem-javascript/
+  /* Based on: 
+    http://code.activestate.com/recipes/578497-eight-queen-problem-javascript/
+    By Thomas Lehmann
+  */
 
   var OCCUPIED = 1; // field is in use
   var FREE = 0; // field is not in use
   var columnNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   var numColumns = 8;
-  var solutionsList = [];
+  var allSolutions = [];
   var logging = false;
   var solutionsQty;
   var currentSolution = 0;
 
-  function Queen() {
+  function Board() {
 
     this.width = numColumns;
     this.lastRow = this.width - 1;
@@ -34,7 +37,7 @@ $(function() {
 
 
     // searches for all possible solutions
-    this.calculateSolutions = function(row) {
+    this.tryNewQueen = function(row) {
       for (var column = 0; column < numColumns; column++) {
         logging && console.log('-----------');
         logging && console.log('Pos: ' + columnNames[row] + (column + 1));
@@ -77,7 +80,7 @@ $(function() {
             logging && console.log(line);
           }
         } else {
-          this.calculateSolutions(row + 1);
+          this.tryNewQueen(row + 1);
         }
 
         this.columns[column] = -1;
@@ -88,25 +91,25 @@ $(function() {
     };
   }
 
-  var currQueen = new Queen();
-  currQueen.calculateSolutions(0);
-  solutionsQty = currQueen.solutions.length;
+  var myBoard = new Board();
+  myBoard.tryNewQueen(0);
+  solutionsQty = myBoard.solutions.length;
   document.querySelector('#currentSolution').innerHTML = 1;
   document.querySelector('#totalSolutions').innerHTML = solutionsQty;
-  logging && console.log('Found ' + currQueen.solutions.length + ' solutions');
+  logging && console.log('Found ' + myBoard.solutions.length + ' solutions');
 
-  for (var rowIndex = 0; rowIndex < currQueen.solutions.length; ++rowIndex) {
-    var solution = currQueen.solutions[rowIndex];
-    var line = [];
+  for (var rowIndex = 0; rowIndex < myBoard.solutions.length; ++rowIndex) {
+    var solution = myBoard.solutions[rowIndex];
+    var singleSolution = [];
     for (var colIndex = 0; colIndex < solution.length; ++colIndex) {
-      line.push(columnNames[colIndex] + (solution[colIndex] + 1));
+      singleSolution.push(columnNames[colIndex] + (solution[colIndex] + 1));
     }
-    solutionsList.push(line);
+    allSolutions.push(singleSolution);
   }
 
   function displaySolution(solutionId) {
-    for (var index = 0; index < solutionsList[solutionId].length; index++) {
-      document.querySelector('#' + solutionsList[solutionId][index] + ' .queen').style.fill = '#D33682';
+    for (var index = 0; index < allSolutions[solutionId].length; index++) {
+      document.querySelector('#' + allSolutions[solutionId][index] + ' .queen').style.fill = '#D33682';
     }
   }
 
@@ -124,7 +127,7 @@ $(function() {
   document.querySelector('#previous').addEventListener('click', function(e) {
     currentSolution--;
     if (currentSolution < 1) {
-      currentSolution = solutionsList.length - 1;
+      currentSolution = allSolutions.length - 1;
     }
     clearBoard();
     document.querySelector('#currentSolution').innerHTML = currentSolution + 1;
@@ -133,7 +136,7 @@ $(function() {
 
   document.querySelector('#next').addEventListener('click', function(e) {
     currentSolution++;
-    if (currentSolution > solutionsList.length - 1) {
+    if (currentSolution > allSolutions.length - 1) {
       currentSolution = 0;
     }
     clearBoard();
