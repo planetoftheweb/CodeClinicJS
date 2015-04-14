@@ -146,7 +146,7 @@ $(function() {
     displaySolution(currentSolution);
   });
 
-  document.querySelector('#Layer_1').addEventListener('click', function(e) {
+  document.querySelector('#Board').addEventListener('click', function(e) {
     if (e.target.tagName === 'path') {
       if (e.target.style.fill === 'rgb(211, 54, 130)') {
         e.target.style.fill = 'transparent';
