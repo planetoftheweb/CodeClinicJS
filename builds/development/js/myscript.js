@@ -107,6 +107,8 @@ $(function() {
     allSolutions.push(singleSolution);
   }
 
+  logging && console.log(allSolutions);
+
   function displaySolution(solutionId) {
     for (var index = 0; index < allSolutions[solutionId].length; index++) {
       document.querySelector('#' + allSolutions[solutionId][index] + ' .queen').style.fill = '#D33682';
@@ -144,4 +146,13 @@ $(function() {
     displaySolution(currentSolution);
   });
 
+  document.querySelector('#Layer_1').addEventListener('click', function(e) {
+    if (e.target.tagName === 'path') {
+      if (e.target.style.fill === 'rgb(211, 54, 130)') {
+        e.target.style.fill = 'transparent';
+      } else {
+        e.target.style.fill = 'rgb(211, 54, 130)';
+      }
+    }
+  }, false);
 }); // page loaded
