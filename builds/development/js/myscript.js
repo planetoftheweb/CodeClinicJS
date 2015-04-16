@@ -1,158 +1,78 @@
 $(function() {
   'use strict';
 
-  /* Based on: 
-    http://code.activestate.com/recipes/578497-eight-queen-problem-javascript/
-    By Thomas Lehmann
-  */
+  var mySound, myOscillator, myGain, originalYPos, originalFrequency,
+    scaleFrequencies = [110, 123.47, 130.81, 146.83, 164.81, 174.61, 196, 220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99, 880, 987.77, 1046.50, 1174.66, 1318.51, 1396.91, 1567.98, 1760],
+    appNode = document.querySelector('.app'),
+    appWidth = appNode.offsetWidth,
+    appHeight = appNode.offsetHeight,
+    mouseXpos = window.clientX,
+    mouseYpos = window.clientY;
 
-  var OCCUPIED = 1; // field is in use
-  var FREE = 0; // field is not in use
-  var columnNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-  var numColumns = 8;
-  var allSolutions = [];
-  var logging = false;
-  var solutionsQty;
-  var currentSolution = 0;
+  appNode.style.background = 'repeating-linear-gradient(to right,#FDF6E4, #FDF6E4 50%, #F7EFD7 50%,  #F7EFD7)';
+  appNode.style.backgroundSize = ((appWidth / scaleFrequencies.length) * 2) + 'px 100%';
 
-  function Board() {
-
-    this.width = numColumns;
-    this.lastRow = this.width - 1;
-    this.columns = new Array(this.width);
-
-    var numberOfDiagonals = 2 * this.width - 1;
-    this.diagDown = new Array(numberOfDiagonals);
-    this.diagUp = new Array(numberOfDiagonals);
-    this.solutions = [];
-
-    for (var index = 0; index < numberOfDiagonals; ++index) {
-      if (index < this.width) {
-        this.columns[index] = -1;
-      }
-      this.diagDown[index] = FREE;
-      this.diagUp[index] = FREE;
+  // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createWaveShaper
+  function makeDistortionCurve(amount) {
+    var k = typeof amount === 'number' ? amount : 50,
+      n_samples = 44100,
+      curve = new Float32Array(n_samples),
+      deg = Math.PI / 180,
+      i = 0,
+      x;
+    for (; i < n_samples; ++i) {
+      x = i * 2 / n_samples - 1;
+      curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
     }
-    this.position = numColumns;
-
-
-    // searches for all possible solutions
-    this.tryNewQueen = function(row) {
-      for (var column = 0; column < numColumns; column++) {
-        logging && console.log('-----------');
-        logging && console.log('Pos: ' + columnNames[row] + (column + 1));
-        // current column blocked?
-        if (this.columns[column] >= 0) {
-          logging && console.log('column blocked');
-          continue;
-        }
-
-        // relating diagonale '\' depending on current row and column
-        var diagDownIndex = row + column;
-        if (this.diagDown[diagDownIndex] === OCCUPIED) {
-          logging && console.log('diagDown occupied');
-          continue;
-        }
-
-        // relating diagonale '/' depending on current row and column
-        var diagonalUpIndex = this.position - 1 - row + column;
-        if (this.diagUp[diagonalUpIndex] === OCCUPIED) {
-          logging && console.log('diagUp occupied');
-          continue;
-        }
-
-        // occupying column and diagonals depending on current row and column
-        this.columns[column] = row;
-        this.diagDown[diagDownIndex] = OCCUPIED;
-        this.diagUp[diagonalUpIndex] = OCCUPIED;
-
-        if (row === (this.width - 1)) {
-          this.solutions.push(this.columns.slice(0));
-          logging && console.log('================= SUCCESS =================');
-          logging && console.log(this.solutions);
-
-          for (var rowIndex = 0; rowIndex < this.solutions.length; ++rowIndex) {
-            var solution = this.solutions[rowIndex];
-            var line = '';
-            for (var colIndex = 0; colIndex < this.solutions.length; ++colIndex) {
-              line += columnNames[colIndex] + (solution[colIndex] + 1 + ' ');
-            }
-            logging && console.log(line);
-          }
-        } else {
-          this.tryNewQueen(row + 1);
-        }
-
-        this.columns[column] = -1;
-        logging && console.log('<========== BACKTRACKING');
-        this.diagDown[diagDownIndex] = FREE;
-        this.diagUp[diagonalUpIndex] = FREE;
-      }
-    };
+    return curve;
   }
 
-  var myBoard = new Board();
-  myBoard.tryNewQueen(0);
-  solutionsQty = myBoard.solutions.length;
-  document.querySelector('#currentSolution').innerHTML = 1;
-  document.querySelector('#totalSolutions').innerHTML = solutionsQty;
-  logging && console.log('Found ' + myBoard.solutions.length + ' solutions');
-
-  for (var rowIndex = 0; rowIndex < myBoard.solutions.length; ++rowIndex) {
-    var solution = myBoard.solutions[rowIndex];
-    var singleSolution = [];
-    for (var colIndex = 0; colIndex < solution.length; ++colIndex) {
-      singleSolution.push(columnNames[colIndex] + (solution[colIndex] + 1));
-    }
-    allSolutions.push(singleSolution);
+  //Create the Audio Context
+  var contextClass = (window.AudioContext || window.webkitAudioContext);
+  if (contextClass) {
+    mySound = new contextClass();
+  } else {
+    document.querySelector('.app ').innerHTML = '<div class="container alert alert-danger" role="alert">Sorry, this app requires the Web Audio API, which your browser does not support.</div>';
   }
 
-  logging && console.log(allSolutions);
+  appNode.addEventListener('mousedown', function(e) {
+    mouseXpos = e.clientX;
+    mouseYpos = e.clientY;
+    originalYPos = mouseYpos;
+    myOscillator = mySound.createOscillator();
+    myOscillator.type = 'square'; // sine square sawtooth triangle custom;
+    originalFrequency = scaleFrequencies[Math.floor((mouseXpos / appWidth) * scaleFrequencies.length)];
+    myOscillator.frequency.value = originalFrequency;
+    myOscillator.start();
 
-  function displaySolution(solutionId) {
-    for (var index = 0; index < allSolutions[solutionId].length; index++) {
-      document.querySelector('#' + allSolutions[solutionId][index] + ' .queen').style.fill = '#D33682';
-    }
-  }
+    var myDistortion = mySound.createWaveShaper();
+    myDistortion.curve = makeDistortionCurve(400);
+    myDistortion.oversample = '4x';
 
-  function clearBoard() {
-    for (var colIndex = 0; colIndex < columnNames.length; colIndex++) {
-      for (var rowIndex = 0; rowIndex < numColumns; rowIndex++) {
-        document.querySelector('#' + columnNames[colIndex] + (rowIndex + 1) + ' .queen').style.fill = 'transparent';
-      }
-    }
-  }
+    myGain = mySound.createGain();
+    myGain.gain.value = 1;
 
-  displaySolution(currentSolution);
+    myOscillator.connect(myDistortion);
+    myDistortion.connect(myGain);
+    myGain.connect(mySound.destination);
 
-  // Events
-  document.querySelector('#previous').addEventListener('click', function(e) {
-    currentSolution--;
-    if (currentSolution < 1) {
-      currentSolution = allSolutions.length - 1;
-    }
-    clearBoard();
-    document.querySelector('#currentSolution').innerHTML = currentSolution + 1;
-    displaySolution(currentSolution);
-  });
 
-  document.querySelector('#next').addEventListener('click', function(e) {
-    currentSolution++;
-    if (currentSolution > allSolutions.length - 1) {
-      currentSolution = 0;
-    }
-    clearBoard();
-    document.querySelector('#currentSolution').innerHTML = currentSolution + 1;
-    displaySolution(currentSolution);
-  });
+    appNode.addEventListener('mousemove', function(e) {
+      var distanceY = e.clientY - originalYPos;
+      mouseXpos = e.clientX;
+      mouseYpos = e.clientY;
+      appWidth = appNode.offsetWidth;
+      appHeight = appNode.offsetHeight;
+      myGain.gain.value = mouseXpos / appWidth;
+      myOscillator.frequency.value = originalFrequency + distanceY;
 
-  document.querySelector('#Board').addEventListener('click', function(e) {
-    if (e.target.tagName === 'path') {
-      if (e.target.style.fill === 'rgb(211, 54, 130)') {
-        e.target.style.fill = 'transparent';
-      } else {
-        e.target.style.fill = 'rgb(211, 54, 130)';
-      }
-    }
+      appNode.style.backgroundSize = ((appWidth / scaleFrequencies.length) * 2) + 'px 100%';
+    }, false);
   }, false);
+
+  appNode.addEventListener('mouseup', function() {
+    myOscillator.stop();
+    appNode.removeEventListener('mousemove');
+  }, false);
+
 }); // page loaded
