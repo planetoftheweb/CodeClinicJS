@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  padding: 100px;
+  padding: 100px 0;
   cursor: pointer;
   color: #AFA175;
 }
