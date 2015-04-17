@@ -13,7 +13,34 @@ $(function() {
       appNode.style.backgroundSize = ((appWidth / scaleFrequencies.length)*2) + 'px 100%';
 
 
+      var contextClass = (window.AudioContext  || window.webkitAudioContext);
 
+      if (contextClass) {
+        mySound = new contextClass();
+      } else {
+        document.querySelector('.app').innerHTML = '<div class="container alert alert-danger" role="alert">Sorry, this app requires the Web Audio API, which your browser does not support.</div>';
+      }
 
+      appNode.addEventListener('mousedown', function(e) {
+        myOscillator = mySound.createOscillator();
+
+        myOscillator.type = 'sine'; // sine square sawtooth triangle
+        myOscillator.value = 110;
+        myOscillator.start();
+
+        myOscillator.connect(mySound.destination);
+
+        appNode.addEventListener('mousemove', function(e) {
+
+          appNode.style.backgroundSize = ((appWidth / scaleFrequencies.length)*2) + 'px 100%';
+
+        }, false); //mousemove
+
+      }, false); //mousedown
+
+      appNode.addEventListener('mouseup', function() {
+        myOscillator.stop();
+        appNode.removeEventListener('mousemove');
+      }, false); //mouseup
 
 }); // page loaded
