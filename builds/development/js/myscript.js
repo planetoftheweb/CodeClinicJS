@@ -15,6 +15,22 @@ $(function() {
 
       var contextClass = (window.AudioContext  || window.webkitAudioContext);
 
+
+      function makeDistortionCurve(amount) {
+        var k = typeof amount === 'number' ? amount : 50,
+          n_samples = 44100,
+          curve = new Float32Array(n_samples),
+          deg = Math.PI / 180,
+          i = 0,
+          x;
+        for ( ; i < n_samples; ++i ) {
+          x = i * 2 / n_samples - 1;
+          curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+        }
+        return curve;
+      }
+
+
       if (contextClass) {
         mySound = new contextClass();
       } else {
@@ -22,13 +38,30 @@ $(function() {
       }
 
       appNode.addEventListener('mousedown', function(e) {
-        myOscillator = mySound.createOscillator();
 
+        mouseXpos = e.clientX;
+        mouseYpos = e.clientY;
+        originalYPos = mouseYpos;
+
+        myOscillator = mySound.createOscillator();
         myOscillator.type = 'sine'; // sine square sawtooth triangle
-        myOscillator.value = 110;
+
+        originalFrequency = scaleFrequencies[Math.floor((mouseXpos/appWidth) * scaleFrequencies.length)];
+
+        myOscillator.frequency.value = originalFrequency;
         myOscillator.start();
 
-        myOscillator.connect(mySound.destination);
+        myDistortion = mySound.createWaveShaper();
+        myDistortion.curve = makeDistortionCurve(400);
+        myDistortion.oversample = '4x';
+
+
+        myGain = mySound.createGain();
+        myGain.gain.value = 1;
+
+        myOscillator.connect(myDistortion);
+        myDistortion.connect(myGain);
+        myGain.connect(mySound.destination);
 
         appNode.addEventListener('mousemove', function(e) {
 
