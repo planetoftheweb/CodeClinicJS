@@ -64,6 +64,12 @@ $(function() {
         myGain.connect(mySound.destination);
 
         appNode.addEventListener('mousemove', function(e) {
+          var distanceY = e.clientY - originalYPos;
+          mouseXpos = e.clientX;
+          appWidth = appNode.offsetWidth;
+
+          myGain.gain.value = mouseXpos/appWidth;
+          myOscillator.frequency.value = originalFrequency + distanceY;
 
           appNode.style.backgroundSize = ((appWidth / scaleFrequencies.length)*2) + 'px 100%';
 
