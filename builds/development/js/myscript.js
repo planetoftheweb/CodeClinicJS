@@ -1,84 +1,86 @@
 $(function() {
-
   'use strict';
-  var file, droppedImage;
-  var target = $('.dropzone');
-  var resultsText = document.querySelector('#results');
 
-  function compareImages(imageURL) {
-    console.log(imageURL);
+  var documentNode = document.querySelector('#status');
+
+  // Compare Strings
+  function strComp(a, b) {
+    return (a > b) ? 1 : (a === b) ? 0 : -1;
   }
 
-  function getImages(url) {
-    var request = new XMLHttpRequest();
-    var list = [];
-    request.onload = function(){
-      var data = this.responseXML.querySelectorAll('img');
-      for (var key in data) {
-        if (data.hasOwnProperty(key)) {
-          var image = data[key].src;
-          if ((image !== undefined) &&
-            ((image.lastIndexOf('.jpg') >0))) {
-            list.push(image);
-          } //image filters
-        } //hasOwnProperty
-      } // key in data
+  //When someone puts an image in the app
+  document.querySelector('.app').addEventListener('dragenter', function(e) {
+    e.preventDefault();
+  });
 
-      resultsText.innerHTML = '<h3>Searching Images...</h3>';
-      for (var item in list) {
-        if (list.hasOwnProperty(item)) {
-          compareImages(list[item]);
-        } //hasOwnProperty
-      } // for item in list
-    }; // request
+  //When someone drags over our app
+  document.querySelector('.app').addEventListener('dragover', function(e) {
+    e.preventDefault();
+  });
 
-    request.open('GET', url);
-    request.responseType = 'document';
-    request.send();
-  } //get Images
+  //When someone drops the image
+  document.querySelector('.app').addEventListener('drop', function(e) {
+    e.preventDefault();
+    var files = e.dataTransfer.files; //get the files from the drop event
 
-  function dropZone(target) {
-    target
-      .on('dragover', function() {
-        target.addClass('dragover');
-        return false;
-      })
-      .on('dragend', function() {
-        target.removeClass('dragover');
-        return false;
-      })
-      .on('dragleave', function() {
-        target.removeClass('dragover');
-        return false;
-      })
-      .on('drop', function(e) {
-        var fileReader;
-        file = e.originalEvent.dataTransfer.files[0];
-        e.stopPropagation();
-        e.preventDefault();
-        target.removeClass('dragover');
+    //Loop should go here
 
-        droppedImage = new Image();
-        fileReader = new FileReader();
-        fileReader.onload = function(e) {
-          droppedImage.src = e.target.result;
-          target.html(droppedImage);
-        };
-        fileReader.readAsDataURL(file);
-      }); // on drop
-  } //drop zone
+    //Read files as an image to display in the DOM
+    var fileAsImage = new FileReader();
+    fileAsImage.readAsDataURL(files[0]);
 
-  dropZone(target);
+    fileAsImage.onloadend = function() {
+      var newImage = document.createElement('img');
+      newImage.src = this.result;
+      documentNode.appendChild(newImage);
 
-  // Wait for events
+      //Read the dropped images as data and extract the EXIF info
+      var fileAsData = new FileReader();
+      fileAsData.file = files[0];
+      fileAsData.readAsBinaryString(files[0]);
 
-    document.forms.compare.addEventListener('submit', function(e) {
-      var formURL = document.compare.url.value;
-      e.preventDefault();
-      if (droppedImage !== undefined) {
-        getImages(formURL);
-      } else {
-        resultsText.innerHTML = '<p class="alert alert-danger">Sorry, you must drop and image to compare against before hitting the compare button</p>';
-      } 
-    }); // form submitted
-}); // page loaded
+      fileAsData.onloadend = function() {
+        var jpeg = new JpegMeta.JpegFile(this.result, this.file.name);
+        var groups = [];
+        var props;
+        var group;
+        var prop;
+        documentNode.innerHTML += 'JPEG File ' + jpeg + '<br />';
+
+        for (group in jpeg.metaGroups) {
+          if (jpeg.metaGroups.hasOwnProperty(group)) {
+            groups.push(jpeg.metaGroups[group]);
+          }
+        }
+
+        groups.sort(function(a, b) {
+          if (a.description === 'General') {
+            return -1;
+          } else if (b.description === 'General') {
+            return 1;
+          } else {
+            return strComp(a.description, b.description);
+          }
+        });
+
+        for (var i = 0; i < groups.length; i++) {
+          group = groups[i];
+          props = [];
+          documentNode.innerHTML += '<h4>' + group.description + '</h4>';
+          for (prop in group.metaProps) {
+            if (group.metaProps.hasOwnProperty(prop)) {
+              props.push(group.metaProps[prop]);
+            }
+          }
+          props.sort(function(a, b) {
+            return strComp(a.description, b.description);
+          });
+          for (var j = 0; j < props.length; j++) {
+            prop = props[j];
+            documentNode.innerHTML += '<em>' + prop.description + ':</em> ' + prop.value + '<br />';
+          }
+        } // Loop through groups
+      }; //Read the files as data and extract EXIF info
+    };// read the files as an image
+  }); // Files Dropped
+}); //page loaded

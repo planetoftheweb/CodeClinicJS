@@ -69,6 +69,7 @@
     "c3": false,
     "jsonReturnData": false,
     "Mustache": false,
+    "JpegMeta": false,
     "resemble": false,
     "angular": false
   } // additional predefined global variables
