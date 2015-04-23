@@ -127,15 +127,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
-.app .dropzone.dragover {
-  border: 10px dashed #0088CC;
-}
-
 .app .dropzone img {
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
   margin: 10px;
-  max-width: 200px;
-  float: left;
+  max-width: 400px;
   border-radius: 10px;
-
 }
