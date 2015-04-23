@@ -8,8 +8,25 @@
     targetNode = document.querySelector(target);
 
     ajaxRequest.onload = function(e) {
-      console.log(e.target);
-    };
+      tableRows = e.target.responseText.split('\r');
+      output = '<table>';
+
+      for (var row = 0; row < tableRows.length; row++) {
+        tableData = tableRows[row].split(',');
+        output += '<tr>';
+
+        for (var cell = 0; cell < tableData.length; cell++) {
+          if (row===0) {
+            output += '<th>' + tableData[cell] + '</th>';
+          } else {
+            output += '<td>' + tableData[cell] + '</td>';
+          } // row 0?
+        } //go through cells
+        output += '</tr>';
+      } //go through rows
+      output += '</table>';
+      targetNode.innerHTML = output;
+    }; // on load
 
     ajaxRequest.open('GET', source, true);
     ajaxRequest.responseType = 'text';
