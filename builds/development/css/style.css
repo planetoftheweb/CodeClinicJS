@@ -101,14 +101,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 /*app specific css*/
 
-.app {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  padding: 100px 0;
-  cursor: pointer;
-  color: #AFA175;
+
+.app h2 {
+  font-family: "Roboto Slab", sans-serif;
+  font-weight: bold;
+  color: RGBA(38, 139, 210, 1);
+}
+
+.instructions {
+  margin: 20px 0;
+}
+
+.app p {
+  font-family: "Open Sans", sans-serif;
+  font-size: .8em;
+}
+
+.app .dropzone {
+  margin-top: 20px;
+  font-size: 1em;
+  width: 100%;
+}
+
+.app .dropzone p {
+  margin-bottom: 10px;
+}
+
+.app .dropzone img {
+  display: block;
+  margin: 0 auto;
+  margin: 10px;
+  max-width: 400px;
+  border-radius: 10px;
 }

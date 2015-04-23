@@ -15,21 +15,28 @@
       <div class="logo"><img src="images/codeclinicicon.svg" alt="Code Clinic Logo"></div>
     <div class="body">
         <h1>Code Clinic <span class="language"><img src="images/javascriptlogo.svg" alt="JavaScript Logo"></span></h1>
-        <h2>Musical Instrument</h2>
+        <h2>Reading Images &amp; Exif Data</h2>
       </div>
     </div>
   </header>
   <div class="main app">
-  <div class="container">
+    <div class="container">
       <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-          <p>Click on this area, then move the mouse up and down to change the pitch, move it side to side to change the volume.</p>
-          <p>The instrument is silent until you click and hold one of the mouse buttons. Letting go of the button turns off the musical tone.</p>
+        <div class="instructions col-md-12">
+          <p>This project examines how to read files through the browser and analyze the EXIF data inside JPG files. There are things like caption, Dimensions, Camera type, color space, exposure information and other details.</p>
         </div>
-  </div>
-  </div>
-  </div>
-  <!-- main -->
+    </div>
+      <div class="row">
+        <div class="col-md-12">
+        <h2>Organize Images</h2>
+          <div id="dropzone" class="dropzone">
+            <p>Drag images onto this area to analyze Exif data and display them.</p>
+          </div>
+          <div id="status"></div>
+        </div>
+    </div>
+    </div><!-- container -->
+  </div><!-- main -->
   <footer class="footer container">
     <div class="row">
       <div class="col-md-12">
@@ -43,6 +50,7 @@
   </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="js/jpegmeta.js"></script>
 <script src="js/myscript.js"></script>
 </body>
 </html>
