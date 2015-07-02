@@ -14,7 +14,9 @@ function getMean(myArray) {
 
 function getMedian(myArray) {
   var median;
-  var sorted = myArray.sort(myArray);
+  var sorted = myArray.sort(function(a, b) {
+    return a > b;
+  });
   var middleIndex = Math.floor(sorted.length/2);
 
   if(sorted.length % 2 === 0) {
@@ -42,9 +44,7 @@ function processData(data) {
 
   for (var key in data) {
     if (data.hasOwnProperty(key)) {
-      if ((data[key].t !== null) 
-        && (data[key].p !== null) 
-        && (data[key].s !== null)) {
+      if ((data[key].t !== null) && (data[key].p !== null) && (data[key].s !== null)) {
         myDates.push(key);
         meanTemps.push(getMean(data[key].t));
         medTemps.push(getMedian(data[key].t));
